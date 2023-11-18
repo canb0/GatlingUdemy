@@ -46,3 +46,10 @@ jobs:
           MAX_RUNTIME: ${{github.event.inputs.maxRunTime}}
           working-directory: ${{ github.workspace }}/${{ env.PERFORMANCE_TEST_FOLDER }}
         run: mvn gatling:test
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/gatling/*.index.html
+          publish_branch: gh-pages
