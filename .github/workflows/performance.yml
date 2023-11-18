@@ -46,7 +46,7 @@ jobs:
         USERS_COUNT: ${{github.event.inputs.userCount}}
         MAX_RUNTIME: ${{github.event.inputs.maxRunTime}}
         working-directory: ${{ github.workspace }}/${{ env.PERFORMANCE_TEST_FOLDER }}
-        run: mvn gatling:test
+      run: mvn gatling:test
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
