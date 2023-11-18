@@ -13,8 +13,10 @@ on:
         description: How long do you want to execute this test? Please state minutes.
         default: '2'
 jobs:
-  steps:
-    - name: Checkout code
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
       uses: actions/checkout@v4.1.1
 
       # setup maven and java
