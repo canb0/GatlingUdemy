@@ -13,42 +13,42 @@ on:
         description: How long do you want to execute this test? Please state minutes.
         default: '2'
 jobs:
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.1
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4.1.1
 
-        # setup maven and java
-      - name: Setup Maven
-        uses: stCarolas/setup-maven@v4.2
+      # setup maven and java
+    - name: Setup Maven
+      uses: stCarolas/setup-maven@v4.2
 
-      - name: Setup Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
       # cache .m2/repository for subsequent builds
-      - name: Setup Maven artifact cache
-        uses: actions/cache@v3
-        continue-on-error: true
-        env:
-          SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+    - name: Setup Maven artifact cache
+      uses: actions/cache@v3
+      continue-on-error: true
+      env:
+        SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
 
-      - name: Run performance test
-        env:
-          USERS_COUNT: ${{github.event.inputs.userCount}}
-          MAX_RUNTIME: ${{github.event.inputs.maxRunTime}}
-          working-directory: ${{ github.workspace }}/${{ env.PERFORMANCE_TEST_FOLDER }}
+    - name: Run performance test
+      env:
+        USERS_COUNT: ${{github.event.inputs.userCount}}
+        MAX_RUNTIME: ${{github.event.inputs.maxRunTime}}
+        working-directory: ${{ github.workspace }}/${{ env.PERFORMANCE_TEST_FOLDER }}
         run: mvn gatling:test
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./target/gatling/*.index.html
-          publish_branch: gh-pages
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./target/gatling/*.index.html
+        publish_branch: gh-pages
