@@ -35,5 +35,5 @@ class AddUserSimulation extends Simulation {
       .get("/api/users?page=2")
       .check(status is 200))
 
-  setUp(scn.inject(constantUsersPerSec(totalUser.toDouble) during (totalDuration.toDouble minutes)).protocols(httpConf)
+  setUp(scn.inject(constantUsersPerSec(totalUser.toDouble) during (totalDuration.toDouble minutes))).protocols(httpConf)
 }
