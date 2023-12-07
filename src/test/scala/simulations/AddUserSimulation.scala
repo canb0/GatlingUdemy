@@ -4,11 +4,15 @@ import io.gatling.core.scenario.Simulation
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
+import scala.concurrent.duration.DurationDouble
+
 class AddUserSimulation extends Simulation {
 
   val httpConf = http.baseUrl(url = "https://reqres.in/")
     .header(name = "Accept", value = "application/json")
     .header(name = "content-type", value = "application/json")
+  val totalUser = sys.env("USERS_COUNT");
+  val totalDuration = sys.env("MAX_RUNTIME");
 
   val scn = scenario(scenarioName = "Add Users Scenario")
     .exec(http(requestName = "add user request")
@@ -31,5 +35,5 @@ class AddUserSimulation extends Simulation {
       .get("/api/users?page=2")
       .check(status is 200))
 
-  setUp(scn.inject(atOnceUsers(users = 10))).protocols(httpConf)
+  setUp(scn.inject(constantUsersPerSec(totalUser.toDouble) during (totalDuration.toDouble minutes)).protocols(httpConf)
 }
