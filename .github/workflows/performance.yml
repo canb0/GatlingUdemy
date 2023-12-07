@@ -19,16 +19,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4.1.1
 
-      # setup maven and java
-    - name: Setup Maven
-      uses: stCarolas/setup-maven@v4.2
-
-    - name: Setup Java
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
       # cache .m2/repository for subsequent builds
     - name: Setup Maven artifact cache
       uses: actions/cache@v3
@@ -40,6 +30,16 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
+          
+      # setup maven and java
+    - name: Setup Maven
+      uses: stCarolas/setup-maven@v4.2
+
+    - name: Setup Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
         
 
     - name: Run performance test
